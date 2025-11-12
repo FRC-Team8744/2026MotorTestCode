@@ -5,6 +5,8 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.mechanisms.Elevator;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
+  public Elevator m_elevator = new Elevator();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
@@ -53,8 +56,9 @@ public class RobotContainer {
     // m_driver.x()
     // .whileTrue(new CoralEject(m_intake, m_coral));
 
-    // m_driver.a()
-    // .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(-350)).alongWith(Commands.runOnce(() -> m_intake.stopBoth())));
+    m_driver.a()
+    .whileTrue(Commands.runOnce(() -> m_elevator.setVelocity(100)))
+    .whileFalse(Commands.runOnce(() -> m_elevator.stopRotate()));
 
     // m_driver.leftBumper()
     // .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
