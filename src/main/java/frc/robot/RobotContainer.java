@@ -28,6 +28,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    // Set the default command for the drivetrain. This will run unless another command is scheduled over it.
+    // m_drivetrain.setDefaultCommand();
+      // new ArcadeDrive(
+      // m_drivetrain, () -> -m_controller.getRawAxis(1), () -> -m_controller.getRawAxis(2));getArcadeDriveCommand());
   }
 
   /**
@@ -38,6 +43,14 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
+    m_driver.leftTrigger()
+      .whileTrue(Commands.runOnce( () -> m_elevator.set(-m_driver.getRawAxis(1)) ))
+      .whileFalse(Commands.runOnce( () -> m_elevator.stop() ));
+
+    // m_driver.a()
+    //   .whileTrue(Commands.runOnce(() -> m_elevator.set(0.5)))
+    //   .whileFalse(Commands.runOnce(() -> m_elevator.stop()));
+
     // m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
     // m_driver.rightStick()
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
@@ -47,18 +60,11 @@ public class RobotContainer {
     // // .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
     // .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae));
 
-    // m_driver.leftTrigger()
-    // .whileTrue(new SequentialCommandGroup(Commands.runOnce(() -> Constants.stopNoTwoPieces = true), new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot))) );
- 
     // m_driver.y()
     // .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
     // m_driver.x()
     // .whileTrue(new CoralEject(m_intake, m_coral));
-
-    m_driver.a()
-    .whileTrue(Commands.runOnce(() -> m_elevator.setVelocity(100)))
-    .whileFalse(Commands.runOnce(() -> m_elevator.stopRotate()));
 
     // m_driver.leftBumper()
     // .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
