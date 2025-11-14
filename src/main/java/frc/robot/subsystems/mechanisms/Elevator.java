@@ -14,7 +14,7 @@ public class Elevator extends SubsystemBase {
   private final motorKraken m_Elevator;
 
   public Elevator() {
-    m_Elevator = new motorKraken(1);  //Put magic number in Constants!
+    m_Elevator = new motorKraken(8);  //Put magic number in Constants!
   }
 
   public void set(double speed) {
