@@ -49,32 +49,33 @@ public class motorKraken {
 
     // User can optionally change the configs or leave it alone to perform a factory default
     // Set slot gain values for velocity closed-loop control
-    config_motor.Slot0.kS = 0.1; // Static Feedforward Gain: To account for friction, add static feedforward value (in Volts)
-    config_motor.Slot0.kV = 0.12; // Velocity Feedforward Gain: Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V, 1/8.33 = 0.12 volts / rotation per second
-    config_motor.Slot0.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    config_motor.Slot0.kP = 0.11; // Proportional Gain
-    config_motor.Slot0.kI = 0; // Integral Gain
-    config_motor.Slot0.kD = 0; // Derivative Gain
+    config_motor.Slot1.kS = 0.1; // Static Feedforward Gain: To account for friction, add static feedforward value (in Volts)
+    config_motor.Slot1.kV = 0.12; // Velocity Feedforward Gain: Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V, 1/8.33 = 0.12 volts / rotation per second
+    config_motor.Slot1.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    config_motor.Slot1.kP = 0.11; // Proportional Gain
+    config_motor.Slot1.kI = 0; // Integral Gain
+    config_motor.Slot1.kD = 0; // Derivative Gain
     // Peak output of 8 volts
     config_motor.Voltage.withPeakForwardVoltage(Volts.of(8)).withPeakReverseVoltage(Volts.of(-8));
 
     // Set slot gain values for position closed-loop control
-    config_motor.Slot1.kS = 0; // Static Feedforward Gain: To account for friction, add static feedforward value (in Volts)
-    config_motor.Slot1.kP = 2.4; // Proportional Gain
-    config_motor.Slot1.kI = 0; // Integral Gain
-    config_motor.Slot1.kD = 0.1; // Derivative Gain
+    config_motor.Slot0.kS = 0; // Static Feedforward Gain: To account for friction, add static feedforward value (in Volts)
+    config_motor.Slot0.kP = 2.4; // Proportional Gain
+    config_motor.Slot0.kI = 0; // Integral Gain
+    config_motor.Slot0.kD = 0.1; // Derivative Gain
 
-    // Configure the gear ratio between the motor and mechanism
+    //67 Configure the gear ratio between the motor and mechanism
     // config_motor.Feedback.SensorToMechanismRatio = 12.8; // 12.8 rotor rotations per mechanism rotation
 
     // Configure velocity and acceleration limiting
-    // config_motor.MotionMagic
-    //   // 5 (mechanism) rotations per second cruise
-    //   .withMotionMagicCruiseVelocity(RotationsPerSecond.of(5))
-    //   // Take approximately 0.5 seconds to reach max vel
-    //   .withMotionMagicAcceleration(RotationsPerSecondPerSecond.of(10))
-    //   // Take approximately 0.1 seconds to reach max accel
-    //   .withMotionMagicJerk(RotationsPerSecondPerSecond.per(Second).of(100));
+    MotionMagicConfigs mm = config_motor.MotionMagic;
+    mm
+      // 5 (mechanism) rotations per second cruise
+      .withMotionMagicCruiseVelocity(RotationsPerSecond.of(.1))
+      // Take approximately 0.5 seconds to reach max vel
+      .withMotionMagicAcceleration(RotationsPerSecondPerSecond.of(.1))
+      // Take approximately 0.1 seconds to reach max accel
+      .withMotionMagicJerk(RotationsPerSecondPerSecond.per(Second).of(10));
 
     // Apply the updated configuration to the motor
     m_motor.getConfigurator().apply(config_motor);
@@ -84,13 +85,13 @@ public class motorKraken {
     m_motor.setPosition(0);  // Zero the motor encoder position
 
     // Turn off CTRE's FOC (Field Oriented Control) algorithm (requires a "PRO" license)
-    ctrl_DutyCycle.EnableFOC = false;
+    ctrl_DutyCycle.EnableFOC = false; //<---- Eefoc?!?!?
     ctrl_Position.EnableFOC = false;
     ctrl_Velocity.EnableFOC = false;
 
     // Set the memory slot number for each control object that uses PID gains
-    ctrl_Velocity.Slot = 0;
-    ctrl_Position.Slot = 1;
+    ctrl_Velocity.Slot = 1;
+    ctrl_Position.Slot = 0;
   }
 
   // Set motor speed with a fractional value from -1.0 to 1.0
