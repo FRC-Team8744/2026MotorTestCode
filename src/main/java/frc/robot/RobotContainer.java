@@ -6,6 +6,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.mechanisms.TurnMotor;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   public Elevator m_elevator = new Elevator();
+  public TurnMotor m_TurnMotor = new TurnMotor();
   // The driver's controller
   
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -49,8 +51,8 @@ public class RobotContainer {
     //   .whileFalse(Commands.runOnce( () -> m_elevator.stop() ));
 
     m_driver.a()
-      .whileTrue(Commands.runOnce(() -> m_elevator.set(-0.5)))
-      .whileFalse(Commands.runOnce(() -> m_elevator.stop()));
+      .whileTrue(Commands.runOnce(() -> m_TurnMotor.set(-0.5)))
+      .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
 
     // m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
     // m_driver.rightStick()
@@ -65,8 +67,8 @@ public class RobotContainer {
     // .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
      m_driver.x()
-     .whileTrue(Commands.runOnce(() -> m_elevator.setVelocity(20)))
-     .whileFalse(Commands.runOnce(() -> m_elevator.stop()));
+     .whileTrue(Commands.runOnce(() -> m_TurnMotor.setVelocity(2000)))
+     .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
 
     // m_driver.leftBumper()
     // .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
@@ -118,16 +120,16 @@ public class RobotContainer {
    // .whileTrue(Commands.runOnce(()-> m_elevator.Position()));
 
      m_driver.pov(0)
-     .whileTrue(Commands.runOnce(() -> m_elevator.setPosition(20)))
-     .whileFalse(Commands.runOnce(() -> m_elevator.stop()));
+     .whileTrue(Commands.runOnce(() -> m_TurnMotor.setPosition(20)))
+     .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
 
     // m_coDriver.pov(90)
     // .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, 0, "L3", .49, -260, "L3"))
     // .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
     // .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L1, 50)))));
      m_driver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setPosition(-20)))
-    .whileFalse(Commands.runOnce(() -> m_elevator.stop()));
+    .whileTrue(Commands.runOnce(() -> m_TurnMotor.setPosition(-20)))
+    .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
     // m_coDriver.pov(270)
     // .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.34, 0, "L2", .30, -260, "L2"))
     // .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
