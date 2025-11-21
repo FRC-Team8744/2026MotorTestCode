@@ -25,13 +25,13 @@ public class RobotContainer {
   
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
-
+  
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    
     // Set the default command for the drivetrain. This will run unless another command is scheduled over it.
     // m_drivetrain.setDefaultCommand();
       // new ArcadeDrive(
@@ -46,9 +46,9 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    // m_driver.leftTrigger()
-    //   .whileTrue(Commands.runOnce( () -> m_elevator.set(-m_driver.getRawAxis(1)) ))
-    //   .whileFalse(Commands.runOnce( () -> m_elevator.stop() ));
+     m_driver.leftTrigger()
+      .whileTrue(Commands.runOnce( () -> m_elevator.setVelocity(1)) )
+      .whileFalse(Commands.runOnce( () -> m_elevator.stop() ));
 
     m_driver.a()
       .whileTrue(Commands.runOnce(() -> m_TurnMotor.set(-0.5)))
@@ -67,9 +67,11 @@ public class RobotContainer {
     // .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
      m_driver.x()
-     .whileTrue(Commands.runOnce(() -> m_TurnMotor.setVelocity(2000)))
+     .whileTrue(Commands.runOnce(() -> m_TurnMotor.setPosition(90*(Math.PI/180)*(5.36))))
      .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
-
+     m_driver.y()
+     .whileTrue(Commands.runOnce(() -> m_TurnMotor.setPosition(-90)))
+     .whileFalse(Commands.runOnce(() -> m_TurnMotor.stop()));
     // m_driver.leftBumper()
     // .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
     // .whileFalse(Commands.runOnce(() -> m_intake.stopBoth()));

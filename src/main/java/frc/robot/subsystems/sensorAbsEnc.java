@@ -38,13 +38,28 @@ public class sensorAbsEnc {
   public double getCanCoder() {
     var posVal = m_canCoder.getPosition();
     if(posVal.getStatus().isOK()) {
-        double val = posVal.getValueAsDouble();
-        return val * 360.0;
+        double val = posVal.getValueAsDouble()* 360.0 - m_canCoderOffsetDegrees; 
+        return val;
     } else {
         /* Report error and retry later */
         System.out.println("Error reading CANcoder position! Robot will not drive straight!");
         return 0.0;
     }
+    // Write code with the following hint to correct the initialization of the turning encoder position!
+// m_turningEncoder.setPosition(Units.degreesToRadians(m_canCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - m_canCoderOffsetDegrees));    
+
+    //   // According to this:
+    // // https://www.chiefdelphi.com/t/ctre-phoenix-pro-to-phoenix-6-looking-back-and-looking-ahead/437313/27
+    // // When using Phoenix6, the CanCoder should not have problems on startup as long as we wait for an update and check for errors.
+    // var posVal = m_canCoder.getAbsolutePosition().waitForUpdate(0.1); // This actaully waits that long! Don't call after init!
+    // if(posVal.getStatus().isOK()) {
+    //     /* Perform seeding */
+    //     double val = posVal.getValueAsDouble();
+    //     m_turningEncoder.setPosition(Units.degreesToRadians(val * 360.0 - m_canCoderOffsetDegrees));
+    // } else {
+    //     /* Report error and retry later */
+    //     System.out.println("Error reading CANcoder position! Robot will not drive straight!");
+    // }
   }
 
 // Write code with the following hint to correct the initialization of the turning encoder position!

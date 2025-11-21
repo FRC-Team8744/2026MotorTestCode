@@ -4,16 +4,21 @@
 
 package frc.robot.subsystems.mechanisms;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.motorKraken;
 import frc.robot.subsystems.motorSparkMax;
+import frc.robot.subsystems.sensorAbsEnc;
 
 public class TurnMotor extends SubsystemBase {
    private final motorSparkMax m_TurnMotorSparkMax;
+   private final sensorAbsEnc m_canCoder;
   /** Creates a new TurnMotor. */
   public TurnMotor() {
     m_TurnMotorSparkMax = new motorSparkMax(10);
+    m_canCoder = new sensorAbsEnc(9, 247.23);
   }
   public void set(double speed) {
     m_TurnMotorSparkMax.set_dutycycle(speed);
@@ -35,6 +40,7 @@ public class TurnMotor extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
      SmartDashboard.putNumber("Rotator postion", m_TurnMotorSparkMax.getPosition());
+     SmartDashboard.putNumber("Absolute encoder position", m_canCoder.getCanCoder());
   }
   }
 
